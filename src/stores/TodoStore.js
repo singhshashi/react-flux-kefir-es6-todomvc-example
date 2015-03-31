@@ -19,7 +19,7 @@ var createActionsStream = AppDispatcher
 var updateActionsStream = AppDispatcher
     .filter(action => action.actionType === TodoConstants.TODO_UPDATE_TEXT)
     .map(action => todos => {
-        todos[action.id] = action.text;
+        todos[action.id].text = action.text;
         return todos;
     });
 

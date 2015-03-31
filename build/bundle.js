@@ -264,7 +264,7 @@
 
 	var TodoActions = _interopRequire(__webpack_require__(8));
 
-	var TodoTextInput = _interopRequire(__webpack_require__(17));
+	var TodoTextInput = _interopRequire(__webpack_require__(10));
 
 	var Header = (function (_React$Component) {
 	    function Header() {
@@ -409,9 +409,9 @@
 
 	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-	var AppDispatcher = _interopRequire(__webpack_require__(10));
+	var AppDispatcher = _interopRequire(__webpack_require__(11));
 
-	var TodoConstants = _interopRequire(__webpack_require__(11));
+	var TodoConstants = _interopRequire(__webpack_require__(12));
 
 	var createActionsStream = AppDispatcher.filter(function (action) {
 	    return action.actionType === TodoConstants.TODO_CREATE;
@@ -433,7 +433,7 @@
 	    return action.actionType === TodoConstants.TODO_UPDATE_TEXT;
 	}).map(function (action) {
 	    return function (todos) {
-	        todos[action.id] = action.text;
+	        todos[action.id].text = action.text;
 	        return todos;
 	    };
 	});
@@ -515,9 +515,9 @@
 
 	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-	var AppDispatcher = _interopRequire(__webpack_require__(10));
+	var AppDispatcher = _interopRequire(__webpack_require__(11));
 
-	var TodoConstants = _interopRequire(__webpack_require__(11));
+	var TodoConstants = _interopRequire(__webpack_require__(12));
 
 	module.exports = {
 	    /**
@@ -605,7 +605,7 @@
 
 	var TodoActions = _interopRequire(__webpack_require__(8));
 
-	var TodoTextInput = _interopRequire(__webpack_require__(17));
+	var TodoTextInput = _interopRequire(__webpack_require__(10));
 
 	var TodoItem = (function (_React$Component) {
 	    function TodoItem(props) {
@@ -714,101 +714,6 @@
 
 	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-	var Kefir = _interopRequire(__webpack_require__(1));
-
-	module.exports = Kefir.emitter();
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
-
-	var keyMirror = _interopRequire(__webpack_require__(12));
-
-	module.exports = keyMirror({
-	    TODO_CREATE: null,
-	    TODO_COMPLETE: null,
-	    TODO_DESTROY: null,
-	    TODO_DESTROY_COMPLETED: null,
-	    TODO_TOGGLE_COMPLETE_ALL: null,
-	    TODO_UNDO_COMPLETE: null,
-	    TODO_UPDATE_TEXT: null
-	});
-
-/***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 */
-
-	"use strict";
-
-	/**
-	 * Constructs an enumeration with keys equal to their value.
-	 *
-	 * For example:
-	 *
-	 *   var COLORS = keyMirror({blue: null, red: null});
-	 *   var myColor = COLORS.blue;
-	 *   var isColorValid = !!COLORS[myColor];
-	 *
-	 * The last line could not be performed if the values of the generated enum were
-	 * not equal to their keys.
-	 *
-	 *   Input:  {key1: val1, key2: val2}
-	 *   Output: {key1: key1, key2: key2}
-	 *
-	 * @param {object} obj
-	 * @return {object}
-	 */
-	var keyMirror = function(obj) {
-	  var ret = {};
-	  var key;
-	  if (!(obj instanceof Object && !Array.isArray(obj))) {
-	    throw new Error('keyMirror(...): Argument must be an object.');
-	  }
-	  for (key in obj) {
-	    if (!obj.hasOwnProperty(key)) {
-	      continue;
-	    }
-	    ret[key] = key;
-	  }
-	  return ret;
-	};
-
-	module.exports = keyMirror;
-
-
-/***/ },
-/* 13 */,
-/* 14 */,
-/* 15 */,
-/* 16 */,
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
-
 	var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 	var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc && desc.writable) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -883,6 +788,97 @@
 	})(React.Component);
 
 	module.exports = TodoTextInput;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+	var Kefir = _interopRequire(__webpack_require__(1));
+
+	module.exports = Kefir.emitter();
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+	var keyMirror = _interopRequire(__webpack_require__(13));
+
+	module.exports = keyMirror({
+	    TODO_CREATE: null,
+	    TODO_COMPLETE: null,
+	    TODO_DESTROY: null,
+	    TODO_DESTROY_COMPLETED: null,
+	    TODO_TOGGLE_COMPLETE_ALL: null,
+	    TODO_UNDO_COMPLETE: null,
+	    TODO_UPDATE_TEXT: null
+	});
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 */
+
+	"use strict";
+
+	/**
+	 * Constructs an enumeration with keys equal to their value.
+	 *
+	 * For example:
+	 *
+	 *   var COLORS = keyMirror({blue: null, red: null});
+	 *   var myColor = COLORS.blue;
+	 *   var isColorValid = !!COLORS[myColor];
+	 *
+	 * The last line could not be performed if the values of the generated enum were
+	 * not equal to their keys.
+	 *
+	 *   Input:  {key1: val1, key2: val2}
+	 *   Output: {key1: key1, key2: key2}
+	 *
+	 * @param {object} obj
+	 * @return {object}
+	 */
+	var keyMirror = function(obj) {
+	  var ret = {};
+	  var key;
+	  if (!(obj instanceof Object && !Array.isArray(obj))) {
+	    throw new Error('keyMirror(...): Argument must be an object.');
+	  }
+	  for (key in obj) {
+	    if (!obj.hasOwnProperty(key)) {
+	      continue;
+	    }
+	    ret[key] = key;
+	  }
+	  return ret;
+	};
+
+	module.exports = keyMirror;
+
 
 /***/ }
 /******/ ]);
