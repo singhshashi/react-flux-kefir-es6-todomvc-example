@@ -1,0 +1,27 @@
+{
+  "name": "react-flux-kefir-es6-todomvc-example",
+  "version": "0.0.1",
+  "description": "TodoMVC example build with React, Flux, Kefir.js and ES6",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react",
+    "flux",
+    "kefir"
+  ],
+  "author": "Petr Myazin <petr.myazin@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^0.13.1",
+    "kefir": "^1.3.0",
+    "keymirror": "^0.1.1"
+  },
+  "devDependencies": {
+    "webpack": "^1.7.3",
+    "babel": "^4.7.16",
+    "babel-core": "^4.7.16",
+    "babel-loader": "^4.2.0"
+  }
+}
