@@ -6,6 +6,8 @@ Flux Dispatcher and EventEmitter (used in Store) are replaced with Kefir.js FRP 
 
 JavaScript code is written in ES6 with modern React 0.13 class syntax, transpiled by <a href="http://babeljs.io/">Babel</a>
 
+<a href="http://pqr.github.io/react-flux-kefir-es6-todomvc-example/">Demo</a>
+
 ## Installing
 
     npm install
