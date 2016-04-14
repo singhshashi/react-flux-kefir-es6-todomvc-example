@@ -12,6 +12,12 @@ export default class TodoItem extends React.Component {
         };
     }
 
+    componentDidUpdate(prevProps,prevState) {
+        console.log("Inside ComponentDidUpdate");
+        console.log(prevProps);
+        console.log(this.props)
+    }
+
     render() {
         var todo = this.props.todo;
         var input;
