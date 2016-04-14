@@ -56,7 +56,7 @@
 
 /***/ },
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	module.exports = Kefir;
 
@@ -80,11 +80,11 @@
 
 	var Footer = _interopRequire(__webpack_require__(4));
 
-	var Header = _interopRequire(__webpack_require__(5));
+	var Header = _interopRequire(__webpack_require__(9));
 
-	var MainSection = _interopRequire(__webpack_require__(6));
+	var MainSection = _interopRequire(__webpack_require__(11));
 
-	var TodoStore = _interopRequire(__webpack_require__(7));
+	var TodoStore = _interopRequire(__webpack_require__(13));
 
 	var TodoApp = (function (_React$Component) {
 	    function TodoApp(props) {
@@ -149,7 +149,7 @@
 
 /***/ },
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	module.exports = React;
 
@@ -169,7 +169,7 @@
 
 	var React = _interopRequire(__webpack_require__(3));
 
-	var TodoActions = _interopRequire(__webpack_require__(8));
+	var TodoActions = _interopRequire(__webpack_require__(5));
 
 	var Footer = (function (_React$Component) {
 	    function Footer() {
@@ -254,6 +254,175 @@
 
 	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
+	var AppDispatcher = _interopRequire(__webpack_require__(6));
+
+	var TodoConstants = _interopRequire(__webpack_require__(7));
+
+	module.exports = {
+	    /**
+	     * @param {string} text
+	     */
+	    create: function create(text) {
+	        AppDispatcher.emit({
+	            actionType: TodoConstants.TODO_CREATE,
+	            text: text
+	        });
+	    },
+	    /**
+	     * @param {string} id The ID of the ToDo item
+	     * @param {string} text
+	     */
+	    updateText: function updateText(id, text) {
+	        AppDispatcher.emit({
+	            actionType: TodoConstants.TODO_UPDATE_TEXT,
+	            id: id,
+	            text: text
+	        });
+	    },
+	    /**
+	     * Toggle whether a single ToDo is complete
+	     * @param {object} todo
+	     */
+	    toggleComplete: function toggleComplete(todo) {
+	        var id = todo.id;
+	        if (todo.complete) {
+	            AppDispatcher.emit({
+	                actionType: TodoConstants.TODO_UNDO_COMPLETE,
+	                id: id
+	            });
+	        } else {
+	            AppDispatcher.emit({
+	                actionType: TodoConstants.TODO_COMPLETE,
+	                id: id
+	            });
+	        }
+	    },
+	    /**
+	     * Mark all ToDos as complete
+	     */
+	    toggleCompleteAll: function toggleCompleteAll() {
+	        AppDispatcher.emit({
+	            actionType: TodoConstants.TODO_TOGGLE_COMPLETE_ALL
+	        });
+	    },
+	    /**
+	     * @param {string} id
+	     */
+	    destroy: function destroy(id) {
+	        AppDispatcher.emit({
+	            actionType: TodoConstants.TODO_DESTROY,
+	            id: id
+	        });
+	    },
+	    /**
+	     * Delete all the completed ToDos
+	     */
+	    destroyCompleted: function destroyCompleted() {
+	        AppDispatcher.emit({
+	            actionType: TodoConstants.TODO_DESTROY_COMPLETED
+	        });
+	    }
+	};
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+	var Kefir = _interopRequire(__webpack_require__(1));
+
+	module.exports = Kefir.emitter();
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+	var keyMirror = _interopRequire(__webpack_require__(8));
+
+	module.exports = keyMirror({
+	    TODO_CREATE: null,
+	    TODO_COMPLETE: null,
+	    TODO_DESTROY: null,
+	    TODO_DESTROY_COMPLETED: null,
+	    TODO_TOGGLE_COMPLETE_ALL: null,
+	    TODO_UNDO_COMPLETE: null,
+	    TODO_UPDATE_TEXT: null
+	});
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 */
+
+	"use strict";
+
+	/**
+	 * Constructs an enumeration with keys equal to their value.
+	 *
+	 * For example:
+	 *
+	 *   var COLORS = keyMirror({blue: null, red: null});
+	 *   var myColor = COLORS.blue;
+	 *   var isColorValid = !!COLORS[myColor];
+	 *
+	 * The last line could not be performed if the values of the generated enum were
+	 * not equal to their keys.
+	 *
+	 *   Input:  {key1: val1, key2: val2}
+	 *   Output: {key1: key1, key2: key2}
+	 *
+	 * @param {object} obj
+	 * @return {object}
+	 */
+	var keyMirror = function(obj) {
+	  var ret = {};
+	  var key;
+	  if (!(obj instanceof Object && !Array.isArray(obj))) {
+	    throw new Error('keyMirror(...): Argument must be an object.');
+	  }
+	  for (key in obj) {
+	    if (!obj.hasOwnProperty(key)) {
+	      continue;
+	    }
+	    ret[key] = key;
+	  }
+	  return ret;
+	};
+
+	module.exports = keyMirror;
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
 	var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 	var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
@@ -262,7 +431,7 @@
 
 	var React = _interopRequire(__webpack_require__(3));
 
-	var TodoActions = _interopRequire(__webpack_require__(8));
+	var TodoActions = _interopRequire(__webpack_require__(5));
 
 	var TodoTextInput = _interopRequire(__webpack_require__(10));
 
@@ -319,7 +488,90 @@
 	module.exports = Header;
 
 /***/ },
-/* 6 */
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc && desc.writable) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+	var React = _interopRequire(__webpack_require__(3));
+
+	var ENTER_KEY_CODE = 13;
+
+	var TodoTextInput = (function (_React$Component) {
+	    function TodoTextInput(props) {
+	        _classCallCheck(this, TodoTextInput);
+
+	        _get(Object.getPrototypeOf(TodoTextInput.prototype), "constructor", this).call(this, props);
+
+	        this.state = {
+	            value: this.props.value || ""
+	        };
+	    }
+
+	    _inherits(TodoTextInput, _React$Component);
+
+	    _createClass(TodoTextInput, {
+	        render: {
+	            value: function render() {
+	                return React.createElement("input", {
+	                    className: this.props.className,
+	                    id: this.props.id,
+	                    placeholder: this.props.placeholder,
+	                    onBlur: this._save.bind(this),
+	                    onChange: this._onChange.bind(this),
+	                    onKeyDown: this._onKeyDown.bind(this),
+	                    value: this.state.value,
+	                    autoFocus: true
+	                });
+	            }
+	        },
+	        _save: {
+
+	            /**
+	             * Invokes the callback passed in as onSave, allowing this component to be
+	             * used in different ways.
+	             */
+
+	            value: function _save() {
+	                this.props.onSave(this.state.value);
+	                this.setState({
+	                    value: ""
+	                });
+	            }
+	        },
+	        _onChange: {
+	            value: function _onChange(event) {
+	                this.setState({
+	                    value: event.target.value
+	                });
+	            }
+	        },
+	        _onKeyDown: {
+	            value: function _onKeyDown(event) {
+	                if (event.keyCode === ENTER_KEY_CODE) {
+	                    this._save();
+	                }
+	            }
+	        }
+	    });
+
+	    return TodoTextInput;
+	})(React.Component);
+
+	module.exports = TodoTextInput;
+
+/***/ },
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -334,9 +586,9 @@
 
 	var React = _interopRequire(__webpack_require__(3));
 
-	var TodoActions = _interopRequire(__webpack_require__(8));
+	var TodoActions = _interopRequire(__webpack_require__(5));
 
-	var TodoItem = _interopRequire(__webpack_require__(9));
+	var TodoItem = _interopRequire(__webpack_require__(12));
 
 	var MainSection = (function (_React$Component) {
 	    function MainSection() {
@@ -402,16 +654,144 @@
 	module.exports = MainSection;
 
 /***/ },
-/* 7 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-	var AppDispatcher = _interopRequire(__webpack_require__(11));
+	var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-	var TodoConstants = _interopRequire(__webpack_require__(12));
+	var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc && desc.writable) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+	var React = _interopRequire(__webpack_require__(3));
+
+	var TodoActions = _interopRequire(__webpack_require__(5));
+
+	var TodoTextInput = _interopRequire(__webpack_require__(10));
+
+	var TodoItem = (function (_React$Component) {
+	    function TodoItem(props) {
+	        _classCallCheck(this, TodoItem);
+
+	        _get(Object.getPrototypeOf(TodoItem.prototype), "constructor", this).call(this, props);
+
+	        this.state = {
+	            isEditing: false
+	        };
+	    }
+
+	    _inherits(TodoItem, _React$Component);
+
+	    _createClass(TodoItem, {
+	        componentDidUpdate: {
+	            value: function componentDidUpdate(prevProps, prevState) {
+	                console.log("Inside ComponentDidUpdate");
+	                console.log(prevProps);
+	                console.log(this.props);
+	            }
+	        },
+	        render: {
+	            value: function render() {
+	                var todo = this.props.todo;
+	                var input;
+	                if (this.state.isEditing) {
+	                    input = React.createElement(TodoTextInput, {
+	                        className: "edit",
+	                        onSave: this._onSave.bind(this),
+	                        value: todo.text
+	                    });
+	                }
+
+	                // List items should get the class 'editing' when editing
+	                // and 'completed' when marked as completed.
+	                // Note that 'completed' is a classification while 'complete' is a state.
+	                // This differentiation between classification and state becomes important
+	                // in the naming of view actions toggleComplete() vs. destroyCompleted().
+	                var className = "";
+	                if (todo.complete) {
+	                    className += "completed";
+	                }
+	                if (this.state.isEditing) {
+	                    className += " editing";
+	                }
+	                className = className.trim();
+
+	                return React.createElement(
+	                    "li",
+	                    { className: className, key: todo.id },
+	                    React.createElement(
+	                        "div",
+	                        { className: "view" },
+	                        React.createElement("input", {
+	                            className: "toggle",
+	                            type: "checkbox",
+	                            checked: todo.complete,
+	                            onChange: this._onToggleComplete.bind(this)
+	                        }),
+	                        React.createElement(
+	                            "label",
+	                            { onDoubleClick: this._onDoubleClick.bind(this) },
+	                            todo.text
+	                        ),
+	                        React.createElement("button", { className: "destroy", onClick: this._onDestroyClick.bind(this) })
+	                    ),
+	                    input
+	                );
+	            }
+	        },
+	        _onToggleComplete: {
+	            value: function _onToggleComplete() {
+	                TodoActions.toggleComplete(this.props.todo);
+	            }
+	        },
+	        _onDoubleClick: {
+	            value: function _onDoubleClick() {
+	                this.setState({ isEditing: true });
+	            }
+	        },
+	        _onSave: {
+
+	            /**
+	             * Event handler called within TodoTextInput.
+	             * Defining this here allows TodoTextInput to be used in multiple places
+	             * in different ways.
+	             * @param {string} text
+	             */
+
+	            value: function _onSave(text) {
+	                TodoActions.updateText(this.props.todo.id, text);
+	                this.setState({ isEditing: false });
+	            }
+	        },
+	        _onDestroyClick: {
+	            value: function _onDestroyClick() {
+	                TodoActions.destroy(this.props.todo.id);
+	            }
+	        }
+	    });
+
+	    return TodoItem;
+	})(React.Component);
+
+	module.exports = TodoItem;
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+	var AppDispatcher = _interopRequire(__webpack_require__(6));
+
+	var TodoConstants = _interopRequire(__webpack_require__(7));
 
 	var createActionsStream = AppDispatcher.filter(function (action) {
 	    return action.actionType === TodoConstants.TODO_CREATE;
@@ -506,379 +886,6 @@
 	    todosStream: todosStream,
 	    areAllCompleteStream: areAllCompleteStream
 	};
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
-
-	var AppDispatcher = _interopRequire(__webpack_require__(11));
-
-	var TodoConstants = _interopRequire(__webpack_require__(12));
-
-	module.exports = {
-	    /**
-	     * @param {string} text
-	     */
-	    create: function create(text) {
-	        AppDispatcher.emit({
-	            actionType: TodoConstants.TODO_CREATE,
-	            text: text
-	        });
-	    },
-	    /**
-	     * @param {string} id The ID of the ToDo item
-	     * @param {string} text
-	     */
-	    updateText: function updateText(id, text) {
-	        AppDispatcher.emit({
-	            actionType: TodoConstants.TODO_UPDATE_TEXT,
-	            id: id,
-	            text: text
-	        });
-	    },
-	    /**
-	     * Toggle whether a single ToDo is complete
-	     * @param {object} todo
-	     */
-	    toggleComplete: function toggleComplete(todo) {
-	        var id = todo.id;
-	        if (todo.complete) {
-	            AppDispatcher.emit({
-	                actionType: TodoConstants.TODO_UNDO_COMPLETE,
-	                id: id
-	            });
-	        } else {
-	            AppDispatcher.emit({
-	                actionType: TodoConstants.TODO_COMPLETE,
-	                id: id
-	            });
-	        }
-	    },
-	    /**
-	     * Mark all ToDos as complete
-	     */
-	    toggleCompleteAll: function toggleCompleteAll() {
-	        AppDispatcher.emit({
-	            actionType: TodoConstants.TODO_TOGGLE_COMPLETE_ALL
-	        });
-	    },
-	    /**
-	     * @param {string} id
-	     */
-	    destroy: function destroy(id) {
-	        AppDispatcher.emit({
-	            actionType: TodoConstants.TODO_DESTROY,
-	            id: id
-	        });
-	    },
-	    /**
-	     * Delete all the completed ToDos
-	     */
-	    destroyCompleted: function destroyCompleted() {
-	        AppDispatcher.emit({
-	            actionType: TodoConstants.TODO_DESTROY_COMPLETED
-	        });
-	    }
-	};
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc && desc.writable) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-	var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
-
-	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
-
-	var React = _interopRequire(__webpack_require__(3));
-
-	var TodoActions = _interopRequire(__webpack_require__(8));
-
-	var TodoTextInput = _interopRequire(__webpack_require__(10));
-
-	var TodoItem = (function (_React$Component) {
-	    function TodoItem(props) {
-	        _classCallCheck(this, TodoItem);
-
-	        _get(Object.getPrototypeOf(TodoItem.prototype), "constructor", this).call(this, props);
-
-	        this.state = {
-	            isEditing: false
-	        };
-	    }
-
-	    _inherits(TodoItem, _React$Component);
-
-	    _createClass(TodoItem, {
-	        render: {
-	            value: function render() {
-	                var todo = this.props.todo;
-	                var input;
-	                if (this.state.isEditing) {
-	                    input = React.createElement(TodoTextInput, {
-	                        className: "edit",
-	                        onSave: this._onSave.bind(this),
-	                        value: todo.text
-	                    });
-	                }
-
-	                // List items should get the class 'editing' when editing
-	                // and 'completed' when marked as completed.
-	                // Note that 'completed' is a classification while 'complete' is a state.
-	                // This differentiation between classification and state becomes important
-	                // in the naming of view actions toggleComplete() vs. destroyCompleted().
-	                var className = "";
-	                if (todo.complete) {
-	                    className += "completed";
-	                }
-	                if (this.state.isEditing) {
-	                    className += " editing";
-	                }
-	                className = className.trim();
-
-	                return React.createElement(
-	                    "li",
-	                    { className: className, key: todo.id },
-	                    React.createElement(
-	                        "div",
-	                        { className: "view" },
-	                        React.createElement("input", {
-	                            className: "toggle",
-	                            type: "checkbox",
-	                            checked: todo.complete,
-	                            onChange: this._onToggleComplete.bind(this)
-	                        }),
-	                        React.createElement(
-	                            "label",
-	                            { onDoubleClick: this._onDoubleClick.bind(this) },
-	                            todo.text
-	                        ),
-	                        React.createElement("button", { className: "destroy", onClick: this._onDestroyClick.bind(this) })
-	                    ),
-	                    input
-	                );
-	            }
-	        },
-	        _onToggleComplete: {
-	            value: function _onToggleComplete() {
-	                TodoActions.toggleComplete(this.props.todo);
-	            }
-	        },
-	        _onDoubleClick: {
-	            value: function _onDoubleClick() {
-	                this.setState({ isEditing: true });
-	            }
-	        },
-	        _onSave: {
-
-	            /**
-	             * Event handler called within TodoTextInput.
-	             * Defining this here allows TodoTextInput to be used in multiple places
-	             * in different ways.
-	             * @param {string} text
-	             */
-
-	            value: function _onSave(text) {
-	                TodoActions.updateText(this.props.todo.id, text);
-	                this.setState({ isEditing: false });
-	            }
-	        },
-	        _onDestroyClick: {
-	            value: function _onDestroyClick() {
-	                TodoActions.destroy(this.props.todo.id);
-	            }
-	        }
-	    });
-
-	    return TodoItem;
-	})(React.Component);
-
-	module.exports = TodoItem;
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc && desc.writable) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-	var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
-
-	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
-
-	var React = _interopRequire(__webpack_require__(3));
-
-	var ENTER_KEY_CODE = 13;
-
-	var TodoTextInput = (function (_React$Component) {
-	    function TodoTextInput(props) {
-	        _classCallCheck(this, TodoTextInput);
-
-	        _get(Object.getPrototypeOf(TodoTextInput.prototype), "constructor", this).call(this, props);
-
-	        this.state = {
-	            value: this.props.value || ""
-	        };
-	    }
-
-	    _inherits(TodoTextInput, _React$Component);
-
-	    _createClass(TodoTextInput, {
-	        render: {
-	            value: function render() {
-	                return React.createElement("input", {
-	                    className: this.props.className,
-	                    id: this.props.id,
-	                    placeholder: this.props.placeholder,
-	                    onBlur: this._save.bind(this),
-	                    onChange: this._onChange.bind(this),
-	                    onKeyDown: this._onKeyDown.bind(this),
-	                    value: this.state.value,
-	                    autoFocus: true
-	                });
-	            }
-	        },
-	        _save: {
-
-	            /**
-	             * Invokes the callback passed in as onSave, allowing this component to be
-	             * used in different ways.
-	             */
-
-	            value: function _save() {
-	                this.props.onSave(this.state.value);
-	                this.setState({
-	                    value: ""
-	                });
-	            }
-	        },
-	        _onChange: {
-	            value: function _onChange(event) {
-	                this.setState({
-	                    value: event.target.value
-	                });
-	            }
-	        },
-	        _onKeyDown: {
-	            value: function _onKeyDown(event) {
-	                if (event.keyCode === ENTER_KEY_CODE) {
-	                    this._save();
-	                }
-	            }
-	        }
-	    });
-
-	    return TodoTextInput;
-	})(React.Component);
-
-	module.exports = TodoTextInput;
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
-
-	var Kefir = _interopRequire(__webpack_require__(1));
-
-	module.exports = Kefir.emitter();
-
-/***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
-
-	var keyMirror = _interopRequire(__webpack_require__(13));
-
-	module.exports = keyMirror({
-	    TODO_CREATE: null,
-	    TODO_COMPLETE: null,
-	    TODO_DESTROY: null,
-	    TODO_DESTROY_COMPLETED: null,
-	    TODO_TOGGLE_COMPLETE_ALL: null,
-	    TODO_UNDO_COMPLETE: null,
-	    TODO_UPDATE_TEXT: null
-	});
-
-/***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 */
-
-	"use strict";
-
-	/**
-	 * Constructs an enumeration with keys equal to their value.
-	 *
-	 * For example:
-	 *
-	 *   var COLORS = keyMirror({blue: null, red: null});
-	 *   var myColor = COLORS.blue;
-	 *   var isColorValid = !!COLORS[myColor];
-	 *
-	 * The last line could not be performed if the values of the generated enum were
-	 * not equal to their keys.
-	 *
-	 *   Input:  {key1: val1, key2: val2}
-	 *   Output: {key1: key1, key2: key2}
-	 *
-	 * @param {object} obj
-	 * @return {object}
-	 */
-	var keyMirror = function(obj) {
-	  var ret = {};
-	  var key;
-	  if (!(obj instanceof Object && !Array.isArray(obj))) {
-	    throw new Error('keyMirror(...): Argument must be an object.');
-	  }
-	  for (key in obj) {
-	    if (!obj.hasOwnProperty(key)) {
-	      continue;
-	    }
-	    ret[key] = key;
-	  }
-	  return ret;
-	};
-
-	module.exports = keyMirror;
-
 
 /***/ }
 /******/ ]);
